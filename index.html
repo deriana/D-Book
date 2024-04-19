@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-title">
+        <h1>Deryana Bookshelf</h1>
+        <p>Submision Dicoding</p>
+      </div>
+      <div class="img-profile">
+        <img src="Rin.jpeg" alt="" />
+      </div>
+    </header>
+    <main>
+      <div class="homepage">
+        <section class="input-container">
+          <div class="input-box">
+            <h2>Enter Your Book</h2>
+          </div>
+          <div class="content-box">
+            <form id="BookInput">
+              <div class="input">
+                <label for="BookTitle">Title</label>
+                <input id="BookTitle" type="text" required />
+              </div>
+              <div class="input">
+                <label for="BookAuthor">Author</label>
+                <input id="BookAuthor" type="text" required />
+              </div>
+              <div class="input">
+                <label for="BookYear">Year</label>
+                <input id="BookYear" type="number" required />
+              </div>
+              <div class="input">
+                <label for="BookDesk">Desk</label>
+                <input id="BookDesk" type="text">
+              </div>
+              <div class="input-inline">
+                <input id="IfBookIsCompleted" type="checkbox" />
+                <label for="IfBookIsCompleted">Done</label>
+              </div>
+              <button id="bookSubmit" type="submit">Send</button>
+            </form>
+          </div>
+        </section>
+        <section class="search-container">
+          <h2>Seacrh Book</h2>
+          <div class="content-box">
+            <p>KeyWord</p>
+            <form id="searchBook">
+              <input id="SearchBook" type="text" />
+              <button id="SubmitSearch" type="submit">Search</button>
+            </form>
+          </div>
+        </section>
+      </div>
+      <section class="result">
+        <section class="book-shelf result-item">
+          <div class="input-box">
+            <h2>Done</h2>
+          </div>
+          <div class="content-box result-content">
+            <div id="BookShelfComplete" class="book-list"></div>
+          </div>
+        </section>
+        <section class="book-shelf result-item">
+          <div class="input-box">
+            <h2>Not Done</h2>
+          </div>
+          <div class="content-box result-content">
+            <div id="InCompleteBookShelf" class="book-list"></div>
+          </div>
+        </section>
+      </section>
+      <section class="stats">
+        <h3>Total Books :</h3>
+        <h3>Complete Books :</h3>
+        <h3>InCoomplete Books :</h3>
+      </section>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
