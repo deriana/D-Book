@@ -9,61 +9,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function save() {
     localStorage.setItem("books", JSON.stringify(books));
+    updateStats();  
   }
 
-function showNotification(message) {
-  if ('Notification' in window) {
-    Notification.requestPermission().then(function (permission) {
-      if (permission === 'granted') {
-        new Notification(message);
-      }
-    });
+  function showNotification(message) {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          new Notification(message);
+        }
+      });
+    }
   }
-}
 
-function remove(id) {
-  const index = books.findIndex((book) => book.id === id);
-  if (index !== -1) {
-    books.splice(index, 1);
-    save();
-    update();
-    updateStats();
-    showNotification('Buku berhasil dihapus!');
+  function remove(id) {
+    const index = books.findIndex((book) => book.id === id);
+    if (index !== -1) {
+      books.splice(index, 1);
+      save();
+      update();
+      showNotification('Buku berhasil dihapus!');
+    }
   }
-}
 
-input.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const title = document.querySelector("#BookTitle").value;
-  const author = document.querySelector("#BookAuthor").value;
-  const year = Number(document.querySelector("#BookYear").value);
-  const desk = document.querySelector("#BookDesk").value;
-  const isComplete = document.querySelector("#IfBookIsCompleted").checked;
+  input.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.querySelector("#BookTitle").value;
+    const author = document.querySelector("#BookAuthor").value;
+    const year = Number(document.querySelector("#BookYear").value);
+    const desk = document.querySelector("#BookDesk").value;
+    const isComplete = document.querySelector("#IfBookIsCompleted").checked;
+    const BookDate = document.querySelector("#BookDate").value;
 
-  const isDuplicate = books.some((book) => book.title === title);
+    const isDuplicate = books.some((book) => book.title === title);
 
-  if (isDuplicate) {
-    alert("Buku sudah ada.");
-  } else {
-    const book = {
-      id: new Date().getTime(),
-      title,
-      author,
-      year,
-      desk,
-      isComplete,
-    };
-    books.push(book);
-    save();
-    update();
-    showNotification('Book Added Successfully!');
-    document.querySelector("#BookTitle").value = "";
-    document.querySelector("#BookAuthor").value = "";
-    document.querySelector("#BookYear").value = "";
-    document.querySelector("#BookDesk").value = "";
-    document.querySelector("#IfBookIsCompleted").checked = false;
-  }
-});
+    if (isDuplicate) {
+      alert("Buku sudah ada.");
+    } else {
+      const book = {
+        id: new Date().getTime(),
+        title,
+        author,
+        year,
+        desk,
+        isComplete,
+        BookDate,
+      };
+      books.push(book);
+      save();
+      update();
+      showNotification('Book Added Successfully!');
+      document.querySelector("#BookTitle").value = "";
+      document.querySelector("#BookAuthor").value = "";
+      document.querySelector("#BookYear").value = "";
+      document.querySelector("#BookDesk").value = "";
+      document.querySelector("#BookDate").value = "";
+      document.querySelector("#IfBookIsCompleted").checked = false;
+    }
+  });
 
   function update() {
     incompleteList.innerHTML = "";
@@ -75,23 +78,12 @@ input.addEventListener("submit", (e) => {
     }
   }
 
-  function remove(id) {
-    const index = books.findIndex((book) => book.id === id);
-    if (index !== -1) {
-      books.splice(index, 1);
-      save();
-      update();
-      updateStats();
-    }
-  }
-
   function toggle(id) {
     const index = books.findIndex((book) => book.id === id);
     if (index !== -1) {
       books[index].isComplete = !books[index].isComplete;
       save();
       update();
-      updateStats();
     }
   }
 
@@ -105,7 +97,8 @@ input.addEventListener("submit", (e) => {
       (book) =>
         book.title.toLowerCase().includes(query) ||
         book.author.toLowerCase().includes(query) ||
-        book.year.toString().includes(query)
+        book.year.toString().includes(query) ||
+        book.BookDate.toString().includes(query)
     );
     updateSearch(results);
   });
@@ -145,9 +138,14 @@ input.addEventListener("submit", (e) => {
     year.style.marginBottom = "10px";
 
     const desk = document.createElement("p");
-    desk.textContent = "Desk:" + book.desk;
+    desk.textContent = "Desk: " + book.desk;
     desk.style.color = "white";
     desk.style.marginBottom = "10px";
+
+    const date = document.createElement("p");
+    date.textContent = "Date And Time: " + book.BookDate;
+    date.style.color = "white";
+    date.style.marginBottom = "10px";
 
     const removeButton = Action("Delete", "red", () => remove(book.id));
     const toggleButton = Action(
@@ -181,6 +179,7 @@ input.addEventListener("submit", (e) => {
     item.appendChild(author);
     item.appendChild(year);
     item.appendChild(desk);
+    item.appendChild(date);
     item.appendChild(actions);
 
     return item;
@@ -195,6 +194,8 @@ input.addEventListener("submit", (e) => {
       document.querySelector("#BookTitle").value = "";
       document.querySelector("#BookAuthor").value = "";
       document.querySelector("#BookYear").value = "";
+      document.querySelector("#BookDesk").value = "";
+      document.querySelector("#BookDate").value = "";
       document.querySelector("#IfBookIsCompleted").checked = false;
     });
     return button;
